@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.example.notingapp.data.AppDatabase
 import com.example.notingapp.fragments.HomeFragment
 import com.example.notingapp.model.Tag
 import com.example.notingapp.network.QuoteService
+import com.example.notingapp.ui.ProfileActivity
 import com.example.notingapp.worker.SyncWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var quoteText: TextView
     lateinit var quoteAuthor: TextView
+    lateinit var btnProfile: Button // Khai báo biến cho Profile Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -35,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         quoteText = findViewById(R.id.quoteText)
         quoteAuthor = findViewById(R.id.quoteAuthor)
+        btnProfile = findViewById(R.id.btnProfile) // Gán Profile Button
 
         insertDefaultTags()
         loadQuote()
@@ -51,6 +55,12 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, HomeFragment())
             .commit()
+
+        // Xử lý sự kiện click nút Profile
+        btnProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     // 🔥 QUAN TRỌNG: khi app đang mở mà click notification

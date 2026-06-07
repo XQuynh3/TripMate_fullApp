@@ -31,8 +31,6 @@ class CreateNoteActivity : AppCompatActivity() {
     lateinit var saveBtn: Button
     lateinit var addTagBtn: Button
     lateinit var locationBtn: Button
-
-    // 🔥 NEW
     lateinit var checkboxBtn: Button
     lateinit var removeLocationBtn: Button
 
@@ -55,7 +53,6 @@ class CreateNoteActivity : AppCompatActivity() {
     private var pendingGeofenceNote: Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_note)
 
@@ -68,7 +65,6 @@ class CreateNoteActivity : AppCompatActivity() {
         saveBtn = findViewById(R.id.saveBtn)
         addTagBtn = findViewById(R.id.addTagBtn)
         locationBtn = findViewById(R.id.locationBtn)
-
         checkboxBtn = findViewById(R.id.checkboxBtn)
         removeLocationBtn = findViewById(R.id.removeLocationBtn)
 
@@ -85,7 +81,9 @@ class CreateNoteActivity : AppCompatActivity() {
             startActivityForResult(intent, 100)
         }
 
-        addTagBtn.setOnClickListener { showAddTagDialog() }
+        addTagBtn.setOnClickListener {
+            showAddTagDialog()
+        }
 
         tagSpinner.setOnLongClickListener {
             deleteCurrentTag()
@@ -96,14 +94,13 @@ class CreateNoteActivity : AppCompatActivity() {
             loadNoteForEdit(noteId)
         }
 
-        saveBtn.setOnClickListener { saveNote() }
+        saveBtn.setOnClickListener {
+            saveNote()
+        }
     }
 
-    // ✅ CHECKLIST
     private fun setupChecklist() {
-
         checkboxBtn.setOnClickListener {
-
             val cursorPos = contentInput.selectionStart
             val text = contentInput.text
 
@@ -115,9 +112,7 @@ class CreateNoteActivity : AppCompatActivity() {
         }
 
         contentInput.setOnTouchListener { v: View, event: MotionEvent ->
-
             if (event.action == MotionEvent.ACTION_UP) {
-
                 val editText = v as EditText
                 val cursor = editText.selectionStart
                 val text = editText.text.toString()
@@ -130,7 +125,6 @@ class CreateNoteActivity : AppCompatActivity() {
                 val line = text.substring(start, end)
 
                 if (line.startsWith("☐") || line.startsWith("☑")) {
-
                     val newLine = if (line.startsWith("☐")) {
                         line.replaceFirst("☐", "☑")
                     } else {
@@ -145,19 +139,16 @@ class CreateNoteActivity : AppCompatActivity() {
         }
     }
 
-    // ✅ REMOVE LOCATION
     private fun setupRemoveLocation() {
-
         removeLocationBtn.setOnClickListener {
-
             if (latitude == null) return@setOnClickListener
 
             AlertDialog.Builder(this)
                 .setTitle("Remove location?")
                 .setMessage("This will remove location reminder from this note.")
                 .setPositiveButton("Remove") { _, _ ->
-
                     val client = LocationServices.getGeofencingClient(this)
+
                     currentNote?.let {
                         client.removeGeofences(listOf(it.id.toString()))
                     }
@@ -176,11 +167,9 @@ class CreateNoteActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 100 && resultCode == RESULT_OK) {
-
             latitude = data?.getDoubleExtra("lat", 0.0)
             longitude = data?.getDoubleExtra("lng", 0.0)
             locationName = data?.getStringExtra("locationName")
@@ -194,7 +183,20 @@ class CreateNoteActivity : AppCompatActivity() {
     private fun setupTagSpinner() {
         tagViewModel.tags.observe(this) { tags ->
             tagList = tags
-            val tagNames = tags.map { it.name }
+
+            val tagNames = mutableListOf(
+                "All",
+                "Idea",
+                "Personal",
+                "Study",
+                "Work"
+            )
+
+            tags.forEach { tag ->
+                if (!tagNames.contains(tag.name)) {
+                    tagNames.add(tag.name)
+                }
+            }
 
             val adapter = ArrayAdapter(
                 this,
@@ -206,10 +208,16 @@ class CreateNoteActivity : AppCompatActivity() {
 
             tagSpinner.onItemSelectedListener =
                 object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
                         selectedPosition = position
                         selectedTag = tagNames[position]
                     }
+
                     override fun onNothingSelected(parent: AdapterView<*>?) {}
                 }
 
@@ -228,23 +236,33 @@ class CreateNoteActivity : AppCompatActivity() {
 
         textSizeSeek.setOnSeekBarChangeListener(
             object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
                     textSize = progress.toFloat()
                     contentInput.textSize = textSize
                 }
+
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {}
             }
         )
     }
 
     private fun setupStyleButtons() {
-        boldBtn.setOnClickListener { contentInput.setTypeface(null, Typeface.BOLD) }
-        italicBtn.setOnClickListener { contentInput.setTypeface(null, Typeface.ITALIC) }
+        boldBtn.setOnClickListener {
+            contentInput.setTypeface(null, Typeface.BOLD)
+        }
+
+        italicBtn.setOnClickListener {
+            contentInput.setTypeface(null, Typeface.ITALIC)
+        }
     }
 
     private fun loadNoteForEdit(id: Int) {
-
         noteViewModel.notes.observe(this) { notes ->
             val note = notes.find { it.id == id } ?: return@observe
 
@@ -261,7 +279,6 @@ class CreateNoteActivity : AppCompatActivity() {
             longitude = note.longitude
             locationName = note.locationName
 
-            // 🔥 show button nếu có location
             if (latitude != null) {
                 removeLocationBtn.visibility = View.VISIBLE
             } else {
@@ -272,14 +289,19 @@ class CreateNoteActivity : AppCompatActivity() {
 
     private fun showAddTagDialog() {
         val input = EditText(this)
+        input.hint = "Enter tag name"
 
         AlertDialog.Builder(this)
-            .setTitle("New Tag")
+            .setTitle("Add Tag")
             .setView(input)
             .setPositiveButton("Add") { _, _ ->
-                val tagName = input.text.toString()
+                val tagName = input.text.toString().trim()
+
                 if (tagName.isNotEmpty()) {
                     tagViewModel.insert(Tag(name = tagName))
+                    Toast.makeText(this, "Tag added", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Tag name is empty", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -296,7 +318,6 @@ class CreateNoteActivity : AppCompatActivity() {
     }
 
     private fun requestLocationPermission() {
-
         if (!ActivityCompat.shouldShowRequestPermissionRationale(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -314,12 +335,10 @@ class CreateNoteActivity : AppCompatActivity() {
     }
 
     private fun showPermissionSettingsDialog() {
-
         AlertDialog.Builder(this)
             .setTitle("Cần cấp quyền vị trí")
             .setMessage("Bạn đã từ chối quyền. Hãy vào Cài đặt để cấp quyền cho app.")
             .setPositiveButton("Mở cài đặt") { _, _ ->
-
                 val intent = Intent(
                     android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                 )
@@ -329,7 +348,7 @@ class CreateNoteActivity : AppCompatActivity() {
 
                 startActivity(intent)
             }
-            .setNegativeButton("Hủy", null)
+            .setNegativeButton("Cancel", null)
             .show()
     }
 
@@ -358,7 +377,6 @@ class CreateNoteActivity : AppCompatActivity() {
     }
 
     private fun saveNote() {
-
         val isEdit = noteId != -1
 
         val note = if (isEdit) {
@@ -384,7 +402,6 @@ class CreateNoteActivity : AppCompatActivity() {
         }
 
         if (latitude == null || longitude == null) {
-
             if (isEdit) noteViewModel.update(note)
             else noteViewModel.insert(note)
 
@@ -416,13 +433,11 @@ class CreateNoteActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == 999) {
-
-            if (grantResults.isNotEmpty() &&
+            if (
+                grantResults.isNotEmpty() &&
                 grantResults[0] == PackageManager.PERMISSION_GRANTED
             ) {
-
                 pendingGeofenceNote?.let { note ->
-
                     val isEdit = note.id != 0
 
                     if (isEdit) noteViewModel.update(note)
@@ -436,7 +451,6 @@ class CreateNoteActivity : AppCompatActivity() {
 
             } else {
                 pendingGeofenceNote?.let { note ->
-
                     val noteWithoutLocation = note.copy(
                         latitude = null,
                         longitude = null,

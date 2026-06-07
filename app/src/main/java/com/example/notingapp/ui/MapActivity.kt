@@ -175,7 +175,7 @@ class MapActivity : AppCompatActivity() {
 
                     showMarker(point, selectedName)
                 } else {
-                    Toast.makeText(this, "Không lấy được vị trí", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Unable to get location", Toast.LENGTH_SHORT).show()
                 }
             }
         }

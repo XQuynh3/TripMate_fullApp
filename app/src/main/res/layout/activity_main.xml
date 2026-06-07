@@ -34,4 +34,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <!-- Profile Button -->
+    <Button
+        android:id="@+id/btnProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:layout_gravity="center" /> <!-- Canh giữa nếu cần -->
+1
 </LinearLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tripmate_primary">#00897B</color>
+    <color name="tripmate_primary_dark">#00695C</color>
+    <color name="tripmate_accent">#00BFA5</color>
+    <color name="tripmate_background">#F0F4F8</color>
+    <color name="tripmate_card">#FFFFFF</color>
+    <color name="tripmate_text">#263238</color>
+    <color name="tripmate_text_secondary">#607D8B</color>
+    <color name="tripmate_error">#E53935</color>
+    <color name="white">#FFFFFF</color>
+</resources>

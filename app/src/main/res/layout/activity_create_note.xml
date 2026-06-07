@@ -25,41 +25,53 @@
             android:layout_height="200dp"
             android:gravity="top"/>
 
+        <!-- TAG DROPDOWN -->
         <Spinner
             android:id="@+id/tagSpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="55dp"
+            android:layout_marginTop="12dp"
+            android:background="#FFFFFF"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
 
+        <!-- ADD TAG -->
         <Button
             android:id="@+id/addTagBtn"
             android:text="Add Tag"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"/>
 
         <!-- TOOLBAR -->
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/boldBtn"
                 android:text="B"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"/>
 
             <Button
                 android:id="@+id/italicBtn"
                 android:text="I"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"/>
 
             <Button
                 android:id="@+id/checkboxBtn"
                 android:text="☐"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
         </LinearLayout>
 
         <SeekBar
@@ -67,7 +79,8 @@
             android:max="40"
             android:progress="16"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
 
         <Button
             android:id="@+id/saveBtn"
@@ -80,9 +93,9 @@
             android:id="@+id/locationBtn"
             android:text="Set Location"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
 
-        <!-- 🔥 NEW: REMOVE LOCATION -->
         <Button
             android:id="@+id/removeLocationBtn"
             android:text="Remove Location"

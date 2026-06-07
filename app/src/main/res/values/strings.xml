@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TripMate</string>
+    <string name="login_title">Welcome to TripMate</string>
+    <string name="login_subtitle">Log in to explore your journey</string>
+    <string name="signup_title">Create a TripMate account</string>
+    <string name="hint_user_id">Username</string>
+    <string name="hint_display_name">Display name</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_login">Log in</string>
+    <string name="btn_signup">Sign up</string>
+    <string name="go_signup">Don\'t have an account? Sign up</string>
+    <string name="go_login">Already have an account? Log in</string>
+</resources>

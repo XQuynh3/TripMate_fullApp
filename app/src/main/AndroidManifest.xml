@@ -1,47 +1,106 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- INTERNET (BẮT BUỘC CHO OSM) -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- LOCATION -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-
-    <!-- ANDROID 13+ -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
-        android:label="NotingApp"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
         android:theme="@style/Theme.NotingApp">
+
+        <!-- PROFILE -->
+        <activity
+            android:name=".ui.ProfileActivity"
+            android:exported="false" />
 
         <!-- MAP -->
         <activity
             android:name=".ui.MapActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
         <!-- CREATE NOTE -->
         <activity
             android:name=".ui.CreateNoteActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
         <!-- MAIN -->
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+
+        <!-- TripMate Home -->
+        <activity
+            android:name=".ui.HomeTripMateActivity"
+            android:exported="false" />
+
+        <!-- TripMate Suggestion Result -->
+        <activity
+            android:name=".ui.SuggestionResultActivity"
+            android:exported="false" />
+
+        <!-- TripMate My Trips -->
+        <activity
+            android:name=".ui.MyTripsActivity"
+            android:exported="false" />
+
+        <!-- TripMate Trip Detail -->
+        <activity
+            android:name=".ui.TripDetailActivity"
+            android:exported="false" />
+
+        <!-- TripMate Create Trip Setup -->
+        <activity
+            android:name=".ui.CreateTripSetupActivity"
+            android:exported="false" />
+
+        <!-- TripMate Add Task / Add Note -->
+        <activity
+            android:name=".ui.AddTaskActivity"
+            android:exported="false" />
+
+        <!-- TripMate Add Plan Item -->
+        <activity
+            android:name=".ui.AddPlanItemActivity"
+            android:exported="false" />
+
+        <!-- TripMate Trip Requests -->
+        <activity
+            android:name=".ui.TripRequestsActivity"
+            android:exported="false" />
+
+        <!-- TripMate Review Detail -->
+        <activity
+            android:name=".ui.ReviewDetailActivity"
+            android:exported="false" />
+
+        <!-- LOGIN -->
+        <activity
+            android:name=".ui.LoginActivity"
             android:exported="true">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
         </activity>
 
+        <!-- SIGN UP -->
+        <activity
+            android:name=".ui.SignUpActivity"
+            android:exported="false" />
+
         <!-- GEOFENCE -->
-        <receiver android:name=".location.GeofenceReceiver"/>
+        <receiver
+            android:name=".location.GeofenceReceiver"
+            android:exported="false" />
 
     </application>
 

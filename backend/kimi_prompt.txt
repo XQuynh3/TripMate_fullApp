@@ -1,0 +1,506 @@
+Tôi có Android project Kotlin tại thư mục hiện tại. Hãy chuyển app từ note app sang TripMate - Collaborative Travel Planner.
+
+Backend đã deploy và test thành công trên Render:
+https://tripmate-be.onrender.com/
+
+Không dùng localhost.
+Không dùng 10.0.2.2.
+Retrofit baseUrl phải là:
+https://tripmate-be.onrender.com/
+
+Không sửa backend/server.js.
+Không xóa backend folder.
+Chỉ sửa Android app UI, model, Retrofit, repository, ViewModel, Activity/Fragment, layout XML, adapter nếu cần.
+
+====================================================
+MỤC TIÊU APP
+====================================================
+
+TripMate là app lập kế hoạch đi chơi nhóm.
+
+Flow chính:
+1. Người dùng đăng ký tài khoản.
+2. Người dùng đăng nhập.
+3. Nhập điểm đến, ví dụ "Vũng Tàu".
+4. App gọi backend để lấy gợi ý:
+   - địa điểm nên đi
+   - món nên ăn
+   - checklist cần chuẩn bị
+5. User tạo trip plan.
+6. User share trip cho bạn bè bằng userId.
+7. Các thành viên cùng tick checklist.
+8. User tạo location reminder.
+9. User rating địa điểm sau chuyến đi.
+
+====================================================
+STYLE UI
+====================================================
+
+Hãy làm UI đẹp, hiện đại, không giống note app cũ.
+
+Phong cách:
+- Travel planner app.
+- Clean, modern.
+- Card UI bo góc lớn.
+- Background sáng.
+- Màu chủ đạo xanh biển / teal / xanh dương.
+- Button bo tròn.
+- Typography rõ ràng.
+- Có loading state, empty state, error state.
+- Tránh UI thô chỉ có TextView/Button mặc định.
+
+Màu gợi ý:
+- Primary: #1E88E5
+- Teal: #00A6A6
+- Accent: #FFB703
+- Background: #F7FAFC
+- Card: #FFFFFF
+- Text main: #1F2937
+- Text secondary: #6B7280
+- Success: #10B981
+
+Tên app hiển thị:
+TripMate
+
+Subtitle:
+Plan trips together
+
+====================================================
+AUTH APIs
+====================================================
+
+1. POST /auth/signup
+
+Body:
+{
+  "userId": "quynh",
+  "displayName": "Xuân Quỳnh",
+  "password": "123456"
+}
+
+Response:
+{
+  "message": "Signup successful",
+  "user": {
+    "userId": "...",
+    "displayName": "...",
+    "avatarColor": "...",
+    "createdAt": ...
+  }
+}
+
+2. POST /auth/login
+
+Body:
+{
+  "userId": "quynh",
+  "password": "123456"
+}
+
+Response:
+{
+  "message": "Login successful",
+  "user": {
+    "userId": "...",
+    "displayName": "...",
+    "avatarColor": "...",
+    "createdAt": ...,
+    "lastLoginAt": ...
+  }
+}
+
+Yêu cầu:
+- Làm màn Login.
+- Làm màn Signup.
+- Sau khi login/signup thành công, lưu currentUserId và displayName.
+- Có thể lưu bằng SharedPreferences.
+- currentUserId dùng cho tất cả API trip/checklist/reminder/rating.
+- Có nút Logout.
+
+Không cần JWT.
+
+====================================================
+TRIP APIs
+====================================================
+
+Base URL:
+https://tripmate-be.onrender.com/
+
+1. GET /suggestions?destination=Vũng%20Tàu
+
+Response có:
+- destination
+- intro
+- places[]
+- foods[]
+- checklist[]
+
+2. POST /trips/from-suggestion
+
+Body:
+{
+  "destination": selectedDestination,
+  "userId": currentUserId,
+  "title": selectedDestination + " cuối tuần",
+  "memberIds": []
+}
+
+3. GET /trips?userId={currentUserId}
+
+4. GET /trips/{tripId}
+
+5. PATCH /trips/{tripId}/checklist/{itemId}
+
+Body:
+{
+  "done": checked,
+  "userId": currentUserId
+}
+
+6. POST /trips/{tripId}/share
+
+Body:
+{
+  "fromUserId": currentUserId,
+  "targetUserId": targetUserId
+}
+
+7. POST /trips/{tripId}/location-reminders
+
+Body:
+{
+  "title": "Tới siêu thị thì mua đồ",
+  "message": "Mua nước, snack, khăn giấy cho chuyến đi",
+  "locationName": "Siêu thị",
+  "latitude": 10.762622,
+  "longitude": 106.660172,
+  "radiusMeters": 200,
+  "userId": currentUserId
+}
+
+8. GET /users/{userId}/location-reminders
+
+9. PATCH /trips/{tripId}/location-reminders/{reminderId}/trigger
+
+Body:
+{
+  "userId": currentUserId
+}
+
+10. POST /trips/{tripId}/ratings
+
+Body:
+{
+  "placeName": "Bãi Sau",
+  "userId": currentUserId,
+  "score": 5,
+  "comment": "Biển đẹp, hợp đi nhóm cuối tuần"
+}
+
+11. GET /ratings/summary
+
+====================================================
+SCREEN 1 - LOGIN
+====================================================
+
+UI:
+- Logo/text lớn: TripMate
+- Subtitle: Plan trips together
+- Card login:
+  - userId input
+  - password input
+  - Login button
+  - Text button: Create new account
+- Demo hint nhỏ:
+  "Use your userId to login"
+
+Behavior:
+- Gọi POST /auth/login.
+- Nếu thành công, lưu user vào SharedPreferences.
+- Chuyển sang Home.
+- Nếu lỗi, hiện message đẹp.
+
+====================================================
+SCREEN 2 - SIGNUP
+====================================================
+
+UI:
+- Header: Create your TripMate account
+- Inputs:
+  - userId
+  - displayName
+  - password
+  - confirm password
+- Button: Sign up
+- Text button: Already have account? Login
+
+Behavior:
+- Validate password confirm.
+- Gọi POST /auth/signup.
+- Nếu thành công, lưu user hoặc chuyển về Login.
+- Hiện Toast/Card success.
+
+====================================================
+SCREEN 3 - HOME / DISCOVER
+====================================================
+
+UI:
+- Header:
+  "Hi, {displayName}"
+  "Where do you want to go?"
+- Hero card:
+  EditText hint: Try: Vũng Tàu, Đà Lạt, Nha Trang
+  Button: Get Suggestions
+- Quick chips:
+  Vũng Tàu
+  Đà Lạt
+  Nha Trang
+- Section Why TripMate?
+  3 mini cards:
+  Smart suggestions
+  Shared checklist
+  Location reminders
+- Button hoặc tab:
+  My Trips
+
+Behavior:
+- Nhập destination hoặc bấm chip.
+- Gọi GET /suggestions.
+- Có loading.
+- Chuyển sang Suggestion Result.
+
+====================================================
+SCREEN 4 - SUGGESTION RESULT
+====================================================
+
+UI:
+- Top card:
+  destination lớn
+  intro
+  badge "Smart Suggestion"
+- Section Places to visit:
+  card list hiển thị:
+  name, type chip, reason, estimatedCost
+- Section Food to try:
+  name, reason, estimatedCost
+- Section Auto checklist:
+  checklist preview
+- Button lớn dưới cùng:
+  Create Trip Plan
+
+Behavior:
+- Bấm Create Trip gọi POST /trips/from-suggestion.
+- Sau khi tạo thành công mở Trip Detail hoặc My Trips.
+
+====================================================
+SCREEN 5 - MY TRIPS
+====================================================
+
+UI:
+- Header: My Trips
+- Hiển thị current user.
+- Trip cards:
+  - title
+  - destination
+  - status badge
+  - members
+  - checklist progress: done / total
+  - updatedBy
+- Empty state:
+  "No trips yet"
+  Button "Plan a trip"
+
+Behavior:
+- Gọi GET /trips?userId=currentUserId.
+- Pull/refresh hoặc nút Refresh.
+- Click trip mở Trip Detail.
+
+====================================================
+SCREEN 6 - TRIP DETAIL
+====================================================
+
+UI:
+- Header card:
+  title
+  destination
+  note
+  ownerId
+  members
+  status
+- Section Shared Checklist:
+  progress bar
+  mỗi item:
+  checkbox
+  text
+  category chip
+  assignedTo
+  updatedBy
+- Section Places:
+  card list
+- Section Foods:
+  card list
+- Section Share:
+  input targetUserId
+  button Share Trip
+- Section Reminders:
+  active reminders
+  button Add Location Reminder
+- Section Rating:
+  button Rate Trip
+
+Behavior:
+- Tick checkbox gọi PATCH checklist.
+- Sau khi response về update UI.
+- Share Trip gọi POST /trips/{tripId}/share.
+- Refresh detail sau khi share/update.
+
+====================================================
+SCREEN 7 - LOCATION REMINDER
+====================================================
+
+UI:
+- Header:
+  Location Reminder
+  Get reminded when you arrive
+- Form card:
+  title
+  message
+  locationName
+  latitude
+  longitude
+  radiusMeters
+- Quick presets:
+  Supermarket
+  Bus Station
+  Hotel
+  Beach
+
+Preset Supermarket:
+title = Tới siêu thị thì mua đồ
+message = Mua nước, snack, khăn giấy cho chuyến đi
+locationName = Siêu thị
+latitude = 10.762622
+longitude = 106.660172
+radiusMeters = 200
+
+Preset Bus Station:
+title = Tới bến xe thì kiểm tra vé
+message = Kiểm tra vé xe, giấy tờ và hành lý
+locationName = Bến xe
+latitude = 10.768
+longitude = 106.681
+radiusMeters = 200
+
+Button:
+Save Reminder
+
+Sau khi save:
+- Gọi POST /trips/{tripId}/location-reminders.
+- Toast success.
+- Gọi GET /users/{currentUserId}/location-reminders.
+- Hiển thị active reminders.
+
+Active reminder card:
+- title
+- message
+- locationName
+- radiusMeters
+- button Simulate Arrived
+
+Simulate Arrived:
+- Gọi PATCH /trips/{tripId}/location-reminders/{reminderId}/trigger.
+- Sau đó gọi lại GET active reminders.
+- Reminder đã trigger sẽ biến mất.
+
+Nếu project cũ có Map/Geofence/Notification:
+- Tái sử dụng nếu kịp.
+- Nếu chưa kịp, dùng form lat/lng + Simulate Arrived trước.
+
+====================================================
+SCREEN 8 - RATING
+====================================================
+
+UI:
+- Title: Rate your trip
+- Chọn placeName từ places list.
+- Rating 1-5 bằng button hoặc star.
+- Comment input.
+- Button Submit Rating.
+- Community rating:
+  gọi GET /ratings/summary
+  hiển thị place name, averageScore, totalReviews.
+
+====================================================
+RETROFIT / DATA MODEL
+====================================================
+
+Tạo Retrofit service:
+- signup
+- login
+- getSuggestions
+- createTrip
+- getTrips
+- getTripDetail
+- updateChecklist
+- shareTrip
+- createLocationReminder
+- getActiveReminders
+- triggerReminder
+- submitRating
+- getRatingSummary
+
+Tạo data classes:
+User
+AuthResponse
+SignupRequest
+LoginRequest
+SuggestionResponse
+Place
+ChecklistItem
+Trip
+LocationReminder
+ActiveReminder
+RatingSummary
+CreateTripRequest
+ChecklistUpdateRequest
+ShareTripRequest
+LocationReminderRequest
+RatingRequest
+
+====================================================
+FILE CHANGE RULES
+====================================================
+
+Trước khi sửa file:
+- Phân tích cấu trúc project.
+- Nói rõ sẽ sửa file nào.
+- Không sửa backend/server.js.
+- Không xóa backend folder.
+- Không xóa code cũ nếu không cần.
+- Ưu tiên thêm màn hình/file mới thay vì phá toàn bộ app.
+- Code phải build được trong Android Studio.
+- Nếu project đang dùng XML + ViewBinding thì tiếp tục dùng XML + ViewBinding.
+- Nếu project đang dùng RecyclerView thì dùng RecyclerView adapter.
+
+====================================================
+FINAL DEMO FLOW
+====================================================
+
+Demo phải chạy được:
+1. Mở app TripMate.
+2. Signup tài khoản mới.
+3. Login.
+4. Nhập/chọn Vũng Tàu.
+5. App hiển thị suggestion.
+6. Bấm Create Trip.
+7. Trip lưu lên MongoDB qua Render backend.
+8. My Trips hiển thị trip.
+9. Share trip cho userB.
+10. Logout, login userB.
+11. userB thấy trip được share.
+12. userB tick checklist.
+13. Tạo Location Reminder bằng preset Supermarket.
+14. Active reminder hiện ra.
+15. Bấm Simulate Arrived, reminder biến mất khỏi active list.
+16. Submit rating cho Bãi Sau.
+17. Rating summary hiển thị average score.

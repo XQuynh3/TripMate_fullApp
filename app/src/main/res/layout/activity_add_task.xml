@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tripmate_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBack"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:text="← Back"
+            android:textColor="@color/tripmate_primary"
+            android:textAllCaps="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="Add Note"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/tripmate_primary"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="Create or edit a trip note, assign it to a member, and optionally attach a location reminder."
+            android:textSize="13sp"
+            android:textColor="@color/tripmate_text_secondary"
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/tripmate_card"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Note content"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/tripmate_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:hintEnabled="false"
+                    app:boxBackgroundMode="outline"
+                    app:boxBackgroundColor="@color/tripmate_card"
+                    app:boxStrokeColor="@color/tripmate_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etTaskText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minLines="2"
+                        android:gravity="top"
+                        android:hint="Ví dụ: Mua nước và snack"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/tripmate_text"
+                        android:textColorHint="@color/tripmate_text_secondary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:text="Category"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/tripmate_text"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Choose one category to organize this note"
+                    android:textSize="12sp"
+                    android:textColor="@color/tripmate_text_secondary"
+                    android:layout_marginTop="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/llCategoryChips"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </HorizontalScrollView>
+
+                <TextView
+                    android:text="Assign to"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/tripmate_text"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Only trip members can be assigned"
+                    android:textSize="12sp"
+                    android:textColor="@color/tripmate_text_secondary"
+                    android:layout_marginTop="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/llMemberChips"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </HorizontalScrollView>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/swReminder"
+                    android:text="Enable location reminder"
+                    android:textColor="@color/tripmate_text"
+                    android:layout_marginTop="18dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:id="@+id/llReminderSection"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Presets"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/tripmate_text"
+                        android:layout_marginTop="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipSupermarket"
+                                android:text="Supermarket"
+                                android:textColor="@color/white"
+                                app:chipBackgroundColor="@color/tripmate_primary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
+                                app:chipCornerRadius="12dp" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipBusStation"
+                                android:text="Bus Station"
+                                android:textColor="@color/white"
+                                app:chipBackgroundColor="@color/tripmate_primary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
+                                app:chipCornerRadius="12dp" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipHotel"
+                                android:text="Hotel"
+                                android:textColor="@color/white"
+                                app:chipBackgroundColor="@color/tripmate_primary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
+                                app:chipCornerRadius="12dp" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chipBeach"
+                                android:text="Beach"
+                                android:textColor="@color/white"
+                                app:chipBackgroundColor="@color/tripmate_primary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:chipCornerRadius="12dp" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                    <TextView
+                        android:text="Reminder title"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/tripmate_text"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:hintEnabled="false"
+                        app:boxBackgroundMode="outline"
+                        app:boxBackgroundColor="@color/tripmate_card"
+                        app:boxStrokeColor="@color/tripmate_primary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etReminderTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Ví dụ: Tới siêu thị thì mua đồ"
+                            android:inputType="text"
+                            android:textColor="@color/tripmate_text"
+                            android:textColorHint="@color/tripmate_text_secondary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:text="Reminder message"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/tripmate_text"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:hintEnabled="false"
+                        app:boxBackgroundMode="outline"
+                        app:boxBackgroundColor="@color/tripmate_card"
+                        app:boxStrokeColor="@color/tripmate_primary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etReminderMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Ví dụ: Mua nước, snack, khăn giấy"
+                            android:inputType="text"
+                            android:textColor="@color/tripmate_text"
+                            android:textColorHint="@color/tripmate_text_secondary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:text="Location"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/tripmate_text"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:hintEnabled="false"
+                        app:boxBackgroundMode="outline"
+                        app:boxBackgroundColor="@color/tripmate_card"
+                        app:boxStrokeColor="@color/tripmate_primary">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etReminderLocationName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Choose a location or use a preset"
+                            android:inputType="text"
+                            android:enabled="false"
+                            android:textColor="@color/tripmate_text"
+                            android:textColorHint="@color/tripmate_text_secondary" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etReminderLat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etReminderLng"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnChooseOnMap"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:text="Choose on Map"
+                            android:textColor="@color/tripmate_primary"
+                            android:textAllCaps="false"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp">
+
+                            <TextView
+                                android:text="Radius"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/tripmate_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                app:hintEnabled="false"
+                                app:boxBackgroundMode="outline"
+                                app:boxBackgroundColor="@color/tripmate_card"
+                                app:boxStrokeColor="@color/tripmate_primary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etReminderRadius"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="200"
+                                    android:inputType="number"
+                                    android:textColor="@color/tripmate_text"
+                                    android:textColorHint="@color/tripmate_text_secondary" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_marginTop="24dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCancel"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:text="Cancel"
+                        android:textColor="@color/tripmate_text_secondary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSave"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="2"
+                        android:text="Save Note"
+                        android:textAllCaps="false"
+                        app:cornerRadius="28dp"
+                        android:backgroundTint="@color/tripmate_primary" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
